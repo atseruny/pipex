@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:33:30 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/27 20:07:27 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/28 00:46:27 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,18 +133,3 @@ void	last(t_pipex *pipex)
 	close(pipex->fds[0]);
 	close(pipex->outfile);
 }
-
-// void last(t_pipex *pipex)
-// {
-//     int pid;
-
-//     pid = fork();
-//     if (pid == 0)
-//     {
-//         dup2(pipex->fds[0], STDIN_FILENO);
-//         dup2(pipex->outfile, STDOUT_FILENO);
-//         close(pipex->fds[0]);
-//         execute_cmd(pipex);
-//     }
-//     close(pipex->fds[0]);
-// }

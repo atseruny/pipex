@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:39:27 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/27 19:55:32 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/28 01:01:02 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	is_empty(char **cmd)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	while (cmd[j])
+	{	
+		i = 0;
+		while (cmd[j][i] != '\0' && ((cmd[j][i] >= 9 && cmd[j][i] <= 13 ) || cmd[j][i] == 32))
+			i++;
+		if (cmd[j][i] == '\0')
+			return (0);
+		j++;
+	}
+	if (i == 0 && j == 0)
+		return (0);
+	return (1);
+}
 
 void	init(int argc, char **argv, char **env, t_pipex *pipex)
 {
@@ -43,6 +63,8 @@ int	main(int argc, char **argv, char **env)
 	while (pipex.current_cmd < pipex.count_cmd)
 	{
 		pipex.cmd = ft_split((pipex.argv)[pipex.current_cmd + 2], ' ');
+		if (is_empty(pipex.cmd) == 0)
+			err_exit("Command is empty\n", &pipex);
 		if (pipex.current_cmd == 0)
 			first(&pipex);
 		else if (pipex.current_cmd == pipex.count_cmd - 1)

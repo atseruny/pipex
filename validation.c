@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:38:56 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/27 19:52:30 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/28 00:51:05 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	free_double(char **s)
 void	err_exit(char *message, t_pipex *pipex)
 {
 	ft_putstr_fd(message, 2);
+	free_double(pipex->cmd);
 	if (pipex != NULL)
 		free_double(pipex->path);
 	exit(1);
