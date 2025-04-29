@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:39:35 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/27 19:13:05 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/28 20:12:35 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@
 typedef struct s_pipex
 {
 	int				fds[2];
+	int				*pid;
 	char			**path;
 	char			**argv;
+	int				argc;
 	char			**env;
 	int				infile;
 	int				outfile;

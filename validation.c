@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:38:56 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/28 00:51:05 by anush            ###   ########.fr       */
+/*   Updated: 2025/04/28 20:15:23 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,34 @@ void	err_exit(char *message, t_pipex *pipex)
 {
 	ft_putstr_fd(message, 2);
 	free_double(pipex->cmd);
-	if (pipex != NULL)
-		free_double(pipex->path);
-	exit(1);
+	free(pipex->pid);
+	free_double(pipex->path);
+	exit(0);
 }
 
 void	check_files(char *infile, char *outfile, t_pipex *pipex)
 {
-	if (access(infile, F_OK | R_OK) == -1)
-		err_exit("Infile is invalid\n", pipex);
+	char	*mess;
+
+	if (access(infile, F_OK) == -1)
+	{
+		mess = ft_strjoin("no such file or directory: ", (pipex->argv)[1]);
+		ft_putstr_fd(mess, 2);
+		free(mess);
+		err_exit("\n", pipex);
+	}
+	if (access(infile, R_OK) == -1)
+	{
+		mess = ft_strjoin("permission denied: ", (pipex->argv)[1]);
+		ft_putstr_fd(mess, 2);
+		free(mess);
+		err_exit("\n", pipex);
+	}
 	if (access(outfile, F_OK) != -1 && access(outfile, W_OK) == -1)
-		err_exit("Outfile is invalid\n", pipex);
+	{
+		mess = ft_strjoin("permission denied: ", (pipex->argv)[pipex->argc - 1]);
+		ft_putstr_fd(mess, 2);
+		free(mess);
+		err_exit("\n", pipex);
+	}
 }

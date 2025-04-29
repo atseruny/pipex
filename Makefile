@@ -11,7 +11,7 @@ OBJ = $(SRC:.c=.o)
 all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) pipex.h Makefile
-	$(CC) $(OBJ) $(LIBFT) -o $(NAME) 
+	$(CC) $(OBJ) $(LIBFT) -o $(NAME)
 #-g3 -fsanitize=address
 
 %.o: %.c

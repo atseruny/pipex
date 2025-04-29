@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:51:48 by atseruny          #+#    #+#             */
-/*   Updated: 2025/01/29 17:31:23 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/28 16:33:05 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ char	**ft_split(char const *s, char c)
 	char	**str;
 
 	j = count_words((char *)s, c);
+	if (j == 0)
+		return (NULL);
 	str = (char **)malloc((j + 1) * sizeof(char *));
 	if (!str)
 		return (NULL);
