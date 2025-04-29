@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:39:27 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/28 20:26:35 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:28:49 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,34 +34,42 @@ void	init(int argc, char **argv, char **env, t_pipex *pipex)
 	check_files(argv[1], argv[argc - 1], pipex);
 	pipex->infile = open(argv[1], O_RDONLY);
 	pipex->outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (pipex->infile == -1 || pipex->outfile == -1)
+		err_exit("Error opening\n", pipex);
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_pipex	pipex;
+	t_pipex	heredoc;
 	int		status;
 	int		i;
 
 	if (argc < 5)
 		return (write(2, "Wrong number of arguments\n", 26), 1);
-	init(argc, argv, env, &pipex);
-	while (pipex.current_cmd < pipex.count_cmd)
+	if (ft_strncmp(argv[1], "here_doc", 8) == 0 && ft_strlen(argv[1]) == 8)
+		here_doc(argc, argv, env, &heredoc);
+	else
 	{
-		pipex.cmd = ft_split((pipex.argv)[pipex.current_cmd + 2], ' ');
-		if (pipex.cmd == NULL)
-			err_exit("Command is empty\n", &pipex);
-		if (pipex.current_cmd == 0)
-			first(&pipex);
-		else if (pipex.current_cmd == pipex.count_cmd - 1)
-			last(&pipex);
-		else
-			mid(&pipex);
-		free_double(pipex.cmd);
-		(pipex.current_cmd)++;
+		init(argc, argv, env, &pipex);
+		while (pipex.current_cmd < pipex.count_cmd)
+		{
+			pipex.cmd = ft_split((pipex.argv)[pipex.current_cmd + 2], ' ');
+			if (pipex.cmd == NULL)
+				err_exit("Command is empty\n", &pipex);
+			if (pipex.current_cmd == 0)
+				first(&pipex);
+			else if (pipex.current_cmd == pipex.count_cmd - 1)
+				last(&pipex);
+			else
+				mid(&pipex);
+			free_double(pipex.cmd);
+			(pipex.current_cmd)++;
+		}
+		i = 0;
+		while (i < pipex.count_cmd)
+			waitpid(pipex.pid[i++], &status, 0);
+		free_double(pipex.path);
+		free(pipex.pid);
 	}
-	i = 0;
-	while (i < pipex.count_cmd)
-		waitpid(pipex.pid[i++], &status, 0);
-	free_double(pipex.path);
-	free(pipex.pid);
 }

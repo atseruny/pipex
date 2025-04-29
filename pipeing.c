@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:33:30 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/28 20:27:56 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/29 20:27:45 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,13 @@ void	execute_cmd(t_pipex *pipex)
 			free(full_path);
 		}
 	}
-	mess = ft_strjoin("command not found: ", pipex->argv[pipex->current_cmd + 2]);
+	// else
+	// {
+	mess = ft_strjoin("command not found: ", pipex->argv[pipex->current_cmd + 3]);
 	ft_putstr_fd(mess, 2);
 	free(mess);
 	err_exit("\n", pipex);
+	// }
 }
 
 void	mid(t_pipex *pipex)

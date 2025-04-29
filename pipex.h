@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:39:35 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/28 20:12:35 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:17:23 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PIPEX_H
 
 # include "libft.h"
+# include "get_next_line.h"
 # include <stdio.h>
 # include <fcntl.h>
 # include <sys/wait.h>
@@ -40,7 +41,7 @@ void	free_double(char **s);
 void	first(t_pipex *pipex);
 void	last(t_pipex *pipex);
 void	mid(t_pipex *pipex);
-
-
+void	here_doc(int argc, char **argv, char **env, t_pipex *heredoc);
+int		ft_strcmp(char *s1, char *s2);
 
 #endif
