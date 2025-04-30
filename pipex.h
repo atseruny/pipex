@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:39:35 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/29 19:17:23 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:24:15 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 
+# define TMP_FILE "/tmp/heredoc.tmp"
 
 typedef struct s_pipex
 {

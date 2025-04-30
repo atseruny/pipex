@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:05:02 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/29 20:27:37 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:23:50 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	init_doc(int argc, char **argv, char **env, t_pipex *heredoc)
 	heredoc->argv = argv;
 	heredoc->env = env;
 	heredoc->pid = (int *)malloc(heredoc->count_cmd * sizeof(int));
-	heredoc->infile = open("file.txt", O_RDONLY | O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	check_files("file.txt", argv[argc - 1], heredoc);
+	heredoc->infile = open(TMP_FILE, O_RDWR | O_CREAT | O_TRUNC, 0777);
+	check_files(TMP_FILE, argv[argc - 1], heredoc);
 	heredoc->outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
 	if (heredoc->infile == -1 || heredoc->outfile == -1)
 		err_exit("Error opening\n", heredoc);
@@ -65,6 +65,8 @@ void	here_doc(int argc, char **argv, char **env, t_pipex *heredoc)
 		str = get_next_line(0);
 	}
 	free(str);
+	close(heredoc->infile);
+	heredoc->infile = open(TMP_FILE, O_RDONLY);
 	while (heredoc->current_cmd < heredoc->count_cmd)
 	{
 		heredoc->cmd = ft_split((heredoc->argv)[heredoc->current_cmd + 3], ' ');
@@ -84,4 +86,5 @@ void	here_doc(int argc, char **argv, char **env, t_pipex *heredoc)
 		waitpid(heredoc->pid[i++], &status, 0);
 	free_double(heredoc->path);
 	free(heredoc->pid);
+	unlink(TMP_FILE);
 }

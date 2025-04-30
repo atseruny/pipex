@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:33:30 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/29 20:27:45 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:07:19 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,17 +99,17 @@ void	mid(t_pipex *pipex)
 	if (pipex->pid[pipex->current_cmd] == 0)
 	{
 		close(fders[0]);
-		dup2(pipex->fds[0], STDIN_FILENO); 
-		dup2(fders[1], STDOUT_FILENO);
+		dup2(pipex->fds[0], 0); 
+		dup2(fders[1], 1);
 		close(pipex->fds[0]);
 		close(fders[1]);
 		execute_cmd(pipex);
 	}
 	close(pipex->fds[0]);
 	pipex->fds[0] = fders[0];
+	close(pipex->fds[1]);
 	pipex->fds[1] = fders[1];
 	close(pipex->fds[1]);
-
 }
 
 void	first(t_pipex *pipex)
