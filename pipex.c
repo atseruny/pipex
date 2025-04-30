@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:39:27 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/30 18:42:59 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/05/01 01:09:01 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,38 +38,42 @@ void	init(int argc, char **argv, char **env, t_pipex *pipex)
 		err_exit("Error opening\n", pipex);
 }
 
+void	pipex_start(int argc, char **argv, char **env, t_pipex *pipex)
+{
+	int		status;
+	int		i;
+
+	init(argc, argv, env, pipex);
+	while (pipex->current_cmd < pipex->count_cmd)
+	{
+		pipex->cmd = ft_split((pipex->argv)[pipex->current_cmd + 2], ' ');
+		if (pipex->cmd == NULL)
+			err_exit("Command is empty\n", pipex);
+		if (pipex->current_cmd == 0)
+			first(pipex);
+		else if (pipex->current_cmd == pipex->count_cmd - 1)
+			last(pipex);
+		else
+			mid(pipex);
+		free_double(pipex->cmd);
+		(pipex->current_cmd)++;
+	}
+	i = 0;
+	while (i < pipex->count_cmd)
+		waitpid(pipex->pid[i++], &status, 0);
+	free_double(pipex->path);
+	free(pipex->pid);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_pipex	pipex;
 	t_pipex	heredoc;
-	int		status;
-	int		i;
 
 	if (argc < 5)
 		return (write(2, "Wrong number of arguments\n", 26), 1);
 	if (ft_strncmp(argv[1], "here_doc", 8) == 0 && ft_strlen(argv[1]) == 8)
 		here_doc(argc, argv, env, &heredoc);
 	else
-	{
-		init(argc, argv, env, &pipex);
-		while (pipex.current_cmd < pipex.count_cmd)
-		{
-			pipex.cmd = ft_split((pipex.argv)[pipex.current_cmd + 2], ' ');
-			if (pipex.cmd == NULL)
-				err_exit("Command is empty\n", &pipex);
-			if (pipex.current_cmd == 0)
-				first(&pipex);
-			else if (pipex.current_cmd == pipex.count_cmd - 1)
-				last(&pipex);
-			else
-				mid(&pipex);
-			free_double(pipex.cmd);
-			(pipex.current_cmd)++;
-		}
-		i = 0;
-		while (i < pipex.count_cmd)
-			waitpid(pipex.pid[i++], &status, 0);
-		free_double(pipex.path);
-		free(pipex.pid);
-	}
+		pipex_start(argc, argv, env, &pipex);
 }

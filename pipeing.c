@@ -3,52 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   pipeing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:33:30 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/30 18:47:31 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/05/01 01:20:34 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*ft_join(char *s1, char *s2, char ch)
-{
-	char	*s;
-	int		l1;
-	int		l2;
-	int		i;
-
-	i = 0;
-	l1 = ft_strlen(s1);
-	l2 = ft_strlen(s2);
-	s = (char *)malloc((l1 + l2 + 2) * sizeof(char));
-	if (!s)
-		return (NULL);
-	while (i < l1)
-	{
-		s[i] = s1[i];
-		i++;
-	}
-	s[i] = ch;
-	i = 0;
-	while (i < l2)
-	{
-		s[l1 + i + 1] = s2[i];
-		i++;
-	}
-	s[l1 + l2 + 1] = '\0';
-	return (s);
-}
-
 void	bash_script(t_pipex *pipex)
 {
 	char	*m;
-	int		j;
 
-	j = 0;
 	if (access(pipex->cmd[0], F_OK | X_OK) == 0)
-		execve(pipex->cmd[0], pipex->cmd, pipex->env);
+		if (execve(pipex->cmd[0], pipex->cmd, pipex->env) == -1)
+			err_exit("execve failed\n", pipex);
 	m = ft_strjoin("command not found: ", pipex->argv[pipex->current_cmd + 2]);
 	ft_putstr_fd(m, 2);
 	free(m);
@@ -64,7 +34,8 @@ void	execute_cmd(t_pipex *pipex)
 	j = 0;
 	if (pipex->path != NULL)
 	{
-		execve(pipex->cmd[0], pipex->cmd, pipex->env);
+		if (execve(pipex->cmd[0], pipex->cmd, pipex->env) == -1)
+			err_exit("execve failed\n", pipex);
 		while (pipex->path[j])
 		{
 			if (ft_strncmp(pipex->cmd[0], "./", 2) == 0)
@@ -72,7 +43,8 @@ void	execute_cmd(t_pipex *pipex)
 			else
 			{
 				full_path = ft_join(pipex->path[j], pipex->cmd[0], '/');
-				execve(full_path, pipex->cmd, pipex->env);
+				if (execve(full_path, pipex->cmd, pipex->env) == -1)
+					err_exit("execve failed\n", pipex);
 			}
 			j++;
 			free(full_path);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:05:02 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/30 18:21:57 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/05/01 01:15:26 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@ void	read_here_doc(t_pipex *heredoc)
 {
 	char	*str;
 
-	// read_here_doc(heredoc);
 	str = get_next_line(0);
-	while (str != NULL && ft_strcmp(heredoc->argv[2], str) != 0)
+	while (str != NULL && ft_strcmp_for_limiter(heredoc->argv[2], str) != 0)
 	{
 		write(heredoc->infile, str, ft_strlen(str));
 		free(str);
@@ -48,14 +47,14 @@ void	init_doc(int argc, char **argv, char **env, t_pipex *heredoc)
 	heredoc->argv = argv;
 	heredoc->env = env;
 	heredoc->pid = (int *)malloc(heredoc->count_cmd * sizeof(int));
-	heredoc->infile = open(TMP_FILE, O_RDWR | O_CREAT | O_TRUNC, 0777);
+	heredoc->infile = open(TMP_FILE, O_WRONLY | O_CREAT, 0777);
 	check_files(TMP_FILE, argv[argc - 1], heredoc);
 	heredoc->outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
 	if (heredoc->infile == -1 || heredoc->outfile == -1)
 		err_exit("Error opening\n", heredoc);
 }
 
-int	ft_strcmp(char *s1, char *s2)
+int	ft_strcmp_for_limiter(char *s1, char *s2)
 {
 	size_t	i;
 

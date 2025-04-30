@@ -3,14 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:38:56 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/30 18:45:19 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/05/01 01:22:10 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+char	*ft_join(char *s1, char *s2, char ch)
+{
+	char	*s;
+	int		l1;
+	int		l2;
+	int		i;
+
+	i = 0;
+	l1 = ft_strlen(s1);
+	l2 = ft_strlen(s2);
+	s = (char *)malloc((l1 + l2 + 2) * sizeof(char));
+	if (!s)
+		return (NULL);
+	while (i < l1)
+	{
+		s[i] = s1[i];
+		i++;
+	}
+	s[i] = ch;
+	i = 0;
+	while (i < l2)
+	{
+		s[l1 + i + 1] = s2[i];
+		i++;
+	}
+	s[l1 + l2 + 1] = '\0';
+	return (s);
+}
 
 void	free_double(char **s)
 {
