@@ -6,11 +6,28 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:05:02 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/30 17:23:50 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:21:57 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	read_here_doc(t_pipex *heredoc)
+{
+	char	*str;
+
+	// read_here_doc(heredoc);
+	str = get_next_line(0);
+	while (str != NULL && ft_strcmp(heredoc->argv[2], str) != 0)
+	{
+		write(heredoc->infile, str, ft_strlen(str));
+		free(str);
+		str = get_next_line(0);
+	}
+	free(str);
+	close(heredoc->infile);
+	heredoc->infile = open(TMP_FILE, O_RDONLY);
+}
 
 void	init_doc(int argc, char **argv, char **env, t_pipex *heredoc)
 {
@@ -52,21 +69,11 @@ int	ft_strcmp(char *s1, char *s2)
 
 void	here_doc(int argc, char **argv, char **env, t_pipex *heredoc)
 {
-	char	*str;
 	int		i;
 	int		status;
 
 	init_doc(argc, argv, env, heredoc);
-	str = get_next_line(0);
-	while (str != NULL && ft_strcmp(argv[2], str) != 0)
-	{
-		write(heredoc->infile, str, ft_strlen(str));
-		free(str);
-		str = get_next_line(0);
-	}
-	free(str);
-	close(heredoc->infile);
-	heredoc->infile = open(TMP_FILE, O_RDONLY);
+	read_here_doc(heredoc);
 	while (heredoc->current_cmd < heredoc->count_cmd)
 	{
 		heredoc->cmd = ft_split((heredoc->argv)[heredoc->current_cmd + 3], ' ');

@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:38:56 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/28 20:15:23 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:45:19 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,27 +35,27 @@ void	err_exit(char *message, t_pipex *pipex)
 
 void	check_files(char *infile, char *outfile, t_pipex *pipex)
 {
-	char	*mess;
+	char	*m;
 
 	if (access(infile, F_OK) == -1)
 	{
-		mess = ft_strjoin("no such file or directory: ", (pipex->argv)[1]);
-		ft_putstr_fd(mess, 2);
-		free(mess);
+		m = ft_strjoin("no such file or directory: ", (pipex->argv)[1]);
+		ft_putstr_fd(m, 2);
+		free(m);
 		err_exit("\n", pipex);
 	}
 	if (access(infile, R_OK) == -1)
 	{
-		mess = ft_strjoin("permission denied: ", (pipex->argv)[1]);
-		ft_putstr_fd(mess, 2);
-		free(mess);
+		m = ft_strjoin("permission denied: ", (pipex->argv)[1]);
+		ft_putstr_fd(m, 2);
+		free(m);
 		err_exit("\n", pipex);
 	}
 	if (access(outfile, F_OK) != -1 && access(outfile, W_OK) == -1)
 	{
-		mess = ft_strjoin("permission denied: ", (pipex->argv)[pipex->argc - 1]);
-		ft_putstr_fd(mess, 2);
-		free(mess);
+		m = ft_strjoin("permission denied: ", (pipex->argv)[pipex->argc - 1]);
+		ft_putstr_fd(m, 2);
+		free(m);
 		err_exit("\n", pipex);
 	}
 }

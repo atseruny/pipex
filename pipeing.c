@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:33:30 by atseruny          #+#    #+#             */
-/*   Updated: 2025/04/30 17:07:19 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:47:31 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,15 @@ char	*ft_join(char *s1, char *s2, char ch)
 
 void	bash_script(t_pipex *pipex)
 {
-	char	*mess;
+	char	*m;
 	int		j;
 
 	j = 0;
 	if (access(pipex->cmd[0], F_OK | X_OK) == 0)
 		execve(pipex->cmd[0], pipex->cmd, pipex->env);
-	mess = ft_strjoin("command not found: ", pipex->argv[pipex->current_cmd + 2]);
-	ft_putstr_fd(mess, 2);
-	free(mess);
+	m = ft_strjoin("command not found: ", pipex->argv[pipex->current_cmd + 2]);
+	ft_putstr_fd(m, 2);
+	free(m);
 	err_exit("\n", pipex);
 }
 
@@ -59,7 +59,7 @@ void	execute_cmd(t_pipex *pipex)
 {
 	int		j;
 	char	*full_path;
-	char	*mess;
+	char	*m;
 
 	j = 0;
 	if (pipex->path != NULL)
@@ -78,13 +78,10 @@ void	execute_cmd(t_pipex *pipex)
 			free(full_path);
 		}
 	}
-	// else
-	// {
-	mess = ft_strjoin("command not found: ", pipex->argv[pipex->current_cmd + 3]);
-	ft_putstr_fd(mess, 2);
-	free(mess);
+	m = ft_strjoin("command not found: ", pipex->argv[pipex->current_cmd + 3]);
+	ft_putstr_fd(m, 2);
+	free(m);
 	err_exit("\n", pipex);
-	// }
 }
 
 void	mid(t_pipex *pipex)
@@ -99,16 +96,14 @@ void	mid(t_pipex *pipex)
 	if (pipex->pid[pipex->current_cmd] == 0)
 	{
 		close(fders[0]);
-		dup2(pipex->fds[0], 0); 
-		dup2(fders[1], 1);
+		dup2(pipex->fds[0], STDIN_FILENO);
+		dup2(fders[1], STDOUT_FILENO);
 		close(pipex->fds[0]);
 		close(fders[1]);
 		execute_cmd(pipex);
 	}
 	close(pipex->fds[0]);
 	pipex->fds[0] = fders[0];
-	close(pipex->fds[1]);
-	pipex->fds[1] = fders[1];
 	close(pipex->fds[1]);
 }
 
