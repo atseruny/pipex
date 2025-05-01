@@ -6,7 +6,7 @@
 /*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:39:35 by atseruny          #+#    #+#             */
-/*   Updated: 2025/05/01 01:22:58 by anush            ###   ########.fr       */
+/*   Updated: 2025/05/01 12:29:00 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_pipex
 }					t_pipex;
 
 void	check_files(char *infile, char *outfile, t_pipex *pipex);
-void	err_exit(char *message, t_pipex *pipex);
+void	err_exit(char *message, t_pipex *pipex, int k);
 void	free_double(char **s);
 void	first(t_pipex *pipex);
 void	last(t_pipex *pipex);

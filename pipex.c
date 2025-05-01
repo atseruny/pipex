@@ -6,7 +6,7 @@
 /*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:39:27 by atseruny          #+#    #+#             */
-/*   Updated: 2025/05/01 01:09:01 by anush            ###   ########.fr       */
+/*   Updated: 2025/05/01 12:28:17 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	init(int argc, char **argv, char **env, t_pipex *pipex)
 	pipex->infile = open(argv[1], O_RDONLY);
 	pipex->outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (pipex->infile == -1 || pipex->outfile == -1)
-		err_exit("Error opening\n", pipex);
+		err_exit("Error opening\n", pipex, 1);
 }
 
 void	pipex_start(int argc, char **argv, char **env, t_pipex *pipex)
@@ -48,7 +48,7 @@ void	pipex_start(int argc, char **argv, char **env, t_pipex *pipex)
 	{
 		pipex->cmd = ft_split((pipex->argv)[pipex->current_cmd + 2], ' ');
 		if (pipex->cmd == NULL)
-			err_exit("Command is empty\n", pipex);
+			err_exit("Command is empty\n", pipex, 1);
 		if (pipex->current_cmd == 0)
 			first(pipex);
 		else if (pipex->current_cmd == pipex->count_cmd - 1)
@@ -76,4 +76,5 @@ int	main(int argc, char **argv, char **env)
 		here_doc(argc, argv, env, &heredoc);
 	else
 		pipex_start(argc, argv, env, &pipex);
+	return (0);
 }

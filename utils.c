@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validation.c                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:38:56 by atseruny          #+#    #+#             */
-/*   Updated: 2025/05/01 01:22:10 by anush            ###   ########.fr       */
+/*   Updated: 2025/05/01 12:37:16 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ void	free_double(char **s)
 	free(s);
 }
 
-void	err_exit(char *message, t_pipex *pipex)
+void	err_exit(char *message, t_pipex *pipex, int k)
 {
 	ft_putstr_fd(message, 2);
 	free_double(pipex->cmd);
 	free(pipex->pid);
 	free_double(pipex->path);
-	exit(0);
+	exit(k);
 }
 
 void	check_files(char *infile, char *outfile, t_pipex *pipex)
@@ -68,23 +68,23 @@ void	check_files(char *infile, char *outfile, t_pipex *pipex)
 
 	if (access(infile, F_OK) == -1)
 	{
-		m = ft_strjoin("no such file or directory: ", (pipex->argv)[1]);
+		m = ft_strjoin((pipex->argv)[1], ": no such file or directory");
 		ft_putstr_fd(m, 2);
 		free(m);
-		err_exit("\n", pipex);
+		err_exit("\n", pipex, 0);
 	}
 	if (access(infile, R_OK) == -1)
 	{
-		m = ft_strjoin("permission denied: ", (pipex->argv)[1]);
+		m = ft_strjoin((pipex->argv)[1], ": permission denied");
 		ft_putstr_fd(m, 2);
 		free(m);
-		err_exit("\n", pipex);
+		err_exit("\n", pipex, 0);
 	}
-	if (access(outfile, F_OK) != -1 && access(outfile, W_OK) == -1)
+	else if (access(outfile, F_OK) != -1 && access(outfile, W_OK) == -1)
 	{
-		m = ft_strjoin("permission denied: ", (pipex->argv)[pipex->argc - 1]);
+		m = ft_strjoin((pipex->argv)[pipex->argc - 1], ": permission denied");
 		ft_putstr_fd(m, 2);
 		free(m);
-		err_exit("\n", pipex);
+		err_exit("\n", pipex, 1);
 	}
 }
