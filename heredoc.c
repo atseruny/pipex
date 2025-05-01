@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:05:02 by atseruny          #+#    #+#             */
-/*   Updated: 2025/05/01 01:15:26 by anush            ###   ########.fr       */
+/*   Updated: 2025/05/01 14:12:48 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ void	init_doc(int argc, char **argv, char **env, t_pipex *heredoc)
 	heredoc->pid = (int *)malloc(heredoc->count_cmd * sizeof(int));
 	heredoc->infile = open(TMP_FILE, O_WRONLY | O_CREAT, 0777);
 	check_files(TMP_FILE, argv[argc - 1], heredoc);
-	heredoc->outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
+	heredoc->outfile = open(argv[argc - 1], O_WRONLY
+			| O_CREAT | O_APPEND, 0777);
 	if (heredoc->infile == -1 || heredoc->outfile == -1)
-		err_exit("Error opening\n", heredoc);
+		err_exit("Error opening\n", heredoc, 1);
 }
 
 int	ft_strcmp_for_limiter(char *s1, char *s2)
@@ -77,7 +78,7 @@ void	here_doc(int argc, char **argv, char **env, t_pipex *heredoc)
 	{
 		heredoc->cmd = ft_split((heredoc->argv)[heredoc->current_cmd + 3], ' ');
 		if (heredoc->cmd == NULL)
-			err_exit("Command is empty\n", heredoc);
+			err_exit("Command is empty\n", heredoc, 1);
 		if (heredoc->current_cmd == 0)
 			first(heredoc);
 		else if (heredoc->current_cmd == heredoc->count_cmd - 1)
